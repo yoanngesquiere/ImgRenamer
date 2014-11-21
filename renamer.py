@@ -3,6 +3,26 @@ import glob
 import sys
 import getopt
 
+VERSION = "0.1"
+
+def usage():
+    print('Usage: '+sys.argv[0]+' [-h] [--version] [--help] [--folder=<path>] [--prefix=<name>]')
+    print()
+    print('OPTIONS')
+    print()
+    print('  --help, -h')
+    print('        Output the help message, which means this message and exits')
+    print('  --folder=<path>')
+    print('        Path to the folder containing the images. By default, it is the current folder')
+    print('  --prefix=<name>')
+    print('        Word that will prefix all renamed images. By default, it is defined as "new_"')
+    print('  --version')
+    print('        Output the version of the software and exits')
+
+def version():
+    print('ImgRenamer v'+VERSION)
+    print('Software developed by Yoann Gesquiere <yoann.gesquiere@gmail.com>')
+
 #Function to rename file
 def _renameFile(originalFile, newName):
     os.rename(originalFile, newName)
@@ -21,9 +41,10 @@ folder = './'
 prefix = 'new_'
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "", ["prefix=", "folder="])
+    opts, args = getopt.getopt(sys.argv[1:], "h", ["prefix=", "folder=", "help", "version"])
 except getopt.GetoptError:
-    print('KO')
+    print('Unknown option')
+    usage()
     exit(2)
 
 for opt, arg in opts:
@@ -31,5 +52,11 @@ for opt, arg in opts:
         prefix = arg
     elif opt in ("--folder"):
         folder = arg
+    elif opt in ("--help", "-h"):
+        usage()
+        exit(0)
+    elif opt in ("--version"):
+        version()
+        exit(0)
 
 _renameMultipleFiles(folder, 'JPG', prefix)
