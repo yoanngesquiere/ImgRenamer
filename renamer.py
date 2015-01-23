@@ -6,7 +6,7 @@ import getopt
 VERSION = "0.1"
 
 def usage():
-    print('Usage: '+sys.argv[0]+' [-h] [--version] [--help] [--folder=<path>] [--prefix=<name>]')
+    print('Usage: '+sys.argv[0]+' [-h] [--version] [--help] [--folder=<path>] [--prefix=<name>] [--extension=<extension>]')
     print()
     print('OPTIONS')
     print()
@@ -16,6 +16,8 @@ def usage():
     print('        Path to the folder containing the images. By default, it is the current folder')
     print('  --prefix=<name>')
     print('        Word that will prefix all renamed images. By default, it is defined as "new_"')
+    print('  --extension=<extension>')
+    print('        Case sensitive extension filter. Only the files with this extension will be renamed. Default is JPG')
     print('  --version')
     print('        Output the version of the software and exits')
 
@@ -39,9 +41,10 @@ def _renameMultipleFiles(folder, extension, prefix):
 
 folder = './'
 prefix = 'new_'
+extension = 'JPG'
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "h", ["prefix=", "folder=", "help", "version"])
+    opts, args = getopt.getopt(sys.argv[1:], "h", ["prefix=", "folder=", "help", "version", "extension="])
 except getopt.GetoptError:
     print('Unknown option')
     usage()
@@ -52,6 +55,8 @@ for opt, arg in opts:
         prefix = arg
     elif opt in ("--folder"):
         folder = arg
+    elif opt in ("--extension"):
+        extension = arg
     elif opt in ("--help", "-h"):
         usage()
         exit(0)
@@ -59,4 +64,4 @@ for opt, arg in opts:
         version()
         exit(0)
 
-_renameMultipleFiles(folder, 'JPG', prefix)
+_renameMultipleFiles(folder, extension, prefix)
